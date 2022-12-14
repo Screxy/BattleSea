@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CBattleGame">
+    <Position X="2.25" Y="0.5" Width="5.25" />
+    <Members>
+      <Method Name="~CBattleGame" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAYAAAEAAAAAAAAAAAAAAABAAAAAgA=</HashCode>
+      <FileName>CBattleGame.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBattlePlayer">
+    <Position X="2.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAQEAAAAAAAAAAEACAABAAARAAAAAAAEAAEIAAAAAg=</HashCode>
+      <FileName>CBattlePlayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAquatory">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAQAAAAAAAAAAAgEAAgAAAIAAAAAAACAAAgBAA=</HashCode>
+      <FileName>CAquatory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShip">
+    <Position X="0.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAIAAAAAAAAAQAAAQAAAAAAFA=</HashCode>
+      <FileName>CShip.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
