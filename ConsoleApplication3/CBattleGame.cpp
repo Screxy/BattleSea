@@ -109,11 +109,16 @@ void CBattleGame::DoPlay()
 	while (m_Player1.IsAlive() and m_Player2.IsAlive())
 	{
 		if (m_iCurrentMove == MOVE1)
-				m_Player1.DoMove();
-		
+		{
+			cout << "Ход игрока 1\n";
+			m_Player1.DoMove();
+		}
 		if (m_iCurrentMove == MOVE2)
-				m_Player2.DoMove();
+		{
+			cout << "Ход игрока 2\n";
+			m_Player2.DoMove();
+		}
 		m_iCurrentMove *= -1;
 	}
-	
+
 }

@@ -18,6 +18,10 @@ bool DoMove(string recieve)
 
 	string alf = "AaBbCcDdEeFfGgHhIiJj"; // для проверки символа в диапозоне A-j
 	string cifrs = "123456789"; // для проверки символа в диапозоне A-j
+	move.erase(remove(move.begin(), move.end(), ' '), move.end()); // удаление пробелов
+	cout << recieve << "< что пришло\n";
+	cout << move << "<что стало\n";;
+
 	if (alf.find(move[0]) == std::string::npos or move.length() == 1)
 	{
 		return true;
@@ -48,14 +52,10 @@ bool DoMove(string recieve)
 int main()
 {
 	setlocale(LC_ALL, "RU");
-	while (true)
-	{
-		string str;
-		cin >> str;
-		DoMove(str);
-		cout << endl;
-	}
-		
+	string move;	
+	cin >> move;
+	move.erase(remove(move.begin(), move.end(), ' '), move.end()); // удаленzие пробелов
+	cout << move;
 
 	system("pause");
 }

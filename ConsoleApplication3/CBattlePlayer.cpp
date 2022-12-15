@@ -33,19 +33,20 @@ bool CBattlePlayer::PrepareShips()
 	
 	while (!ShipsAreReady())
 	{
-			if (Try2PlaceShip(recieve()))
-			{
-				Message("OK");
-			}
-			else
-			{
-				Message("Ошибка в расположении корабля!");
-			}
-	Message(m_Aqua.PrintForeign());
+		if (Try2PlaceShip(recieve()))
+		{
+			Message("OK");
+		}
+		else
+		{
+			Message("Ошибка в расположении корабля!");
+		}
+		Message(m_Aqua.PrintForeign());
 	}
 	Message("Ваши корабли готовы!");
 	
 	return true;
+
 }
 bool CBattlePlayer::DoMove()
 {
@@ -57,6 +58,11 @@ bool CBattlePlayer::DoMove()
 	CShip *ship=NULL;
 	string alf = "AaBbCcDdEeFfGgHhIiJj"; // для проверки символа в диапозоне A-j
 	string cifrs = "123456789"; // для проверки символа в диапозоне A-j
+	cout << move;
+
+	move.erase(remove(move.begin(), move.end(), ' '), move.end()); // удаление пробелов
+	cout << move;
+
 	cout << move << endl;
 	cout << move.length() << "< длина\n";
 	if (alf.find(move[0]) == std::string::npos or move.length() == 1 or move.length() >= 4)
@@ -161,9 +167,57 @@ bool CBattlePlayer::Try2PlaceShip(string ship)
 {
 	int iDeck = 0;
 	char buf[50];
+	cout << ship << "< ship before delete\n";
+	ship.erase(remove(ship.begin(), ship.end(), ' '), ship.end()); // удаление пробелов
+	cout << ship << "< ship after delete\n";;
 	sscanf_s(ship.c_str(), "%i(%[^)]", &iDeck,buf,50);
+	string alf = "AaBbCcDdEeFfGgHhIiJj"; // для проверки символа в диапозоне A-j
 	char cell[4][10];
+	if (iDeck < 1 or iDeck > 4)
+	{
+		cout << "ошибка в палубности";
+		return false;
+	}
+	switch (iDeck)
+	{
+	case 1:
+		if (alf.find(ship[2]) != std::string::npos and ship[1] == '(' and ship[4] == ')' and ship.length() == 5) // проверка по символам, скобкам, соответсвии палубности и координат // доработать
+		{
+		}
+		else
+		{
+			cout << "1 ошибка в штуках после (";
+			return false;
+		}
+	case 2:
+		if (alf.find(ship[2]) != std::string::npos and alf.find(ship[5]) != std::string::npos and ship[1] == '(' and ship[7] == ')' and ship.length() == 8)
+		{
+		}
+		else
+		{
+			cout << "2 ошибка в штуках после (";
 
+			return false;
+		}
+	case 3:
+		if (alf.find(ship[2]) != std::string::npos and alf.find(ship[5]) != std::string::npos and alf.find(ship[8]) != std::string::npos and ship[1] == '(' and ship[10] == ')' and ship.length() == 11)
+		{
+		}
+		else
+		{
+			cout << "3 ошибка в штуках после (";
+			return false;
+		}
+	case 4:
+		if (alf.find(ship[2]) != std::string::npos and alf.find(ship[5]) != std::string::npos and alf.find(ship[8]) != std::string::npos and alf.find(ship[11]) != std::string::npos and ship[1] == '(' and ship[13] == ')' and ship.length() == 14)
+		{
+		}
+		else
+		{
+			cout << "4 ошибка в штуках после (";
+			return false;
+		}
+	}
 	if (iDeck == 4)
 	{
 		sscanf_s(buf, "%[^,],%[^,],%[^,],%[^\n],", cell[0],10,cell[1],10, cell[2], 10, cell[3], 10);
@@ -188,6 +242,8 @@ bool CBattlePlayer::Try2PlaceShip(string ship)
 		CCell *pCell= NULL;
 		if (m_Aqua.Try2PlaceDeck(cell[i],&pCell,s))
 		{
+			cout << "без ошибок";
+
 			s->m_pCells.push_back(pCell);
 			pCell->m_pShip = s;
 		}
@@ -195,9 +251,12 @@ bool CBattlePlayer::Try2PlaceShip(string ship)
 		{
 			s->ClearCells();
 			delete s;
+			cout << "ошибка когда ставил";
+
 			return false;
 		}
 	}
+	cout << "без ошибок";
 
 	m_Ships.push_back(s);
 
@@ -222,8 +281,7 @@ string CBattlePlayer::recieve()
 	char buff1[1024];
 	recv(m_sock, &buff[0], sizeof(buff), 0);
 	sscanf_s(buff, "%[^\n]", buff1,1024);
-	//cout << buff << " < это buf \n";
-	//cout << buff1 << " < это buf1 \n";
+	cout << buff1 << "< это buf1 \n";
 	return buff1;
 }
 
@@ -237,7 +295,7 @@ string CBattlePlayer::placerecieve()
 	strbuf += "0";
 	strbuf.erase(strbuf.find_first_of(")")+1, strbuf.find_first_of("0"));
 	string alf = "AaBbCcDdEeFfGgHhIiJj"; // для проверки символа в диапозоне A-j
-	strbuf.erase(remove(strbuf.begin(), strbuf.end(), ' '), strbuf.end());
+	strbuf.erase(remove(strbuf.begin(), strbuf.end(), ' '), strbuf.end()); // Удаление пробелов
 	cout << strbuf;
 	char buf[50];
 	int nDeck;
