@@ -28,41 +28,20 @@ void CBattlePlayer::Message(string str)
 
 bool CBattlePlayer::PrepareShips()
 {
-	int k = 0;
 	Message("Расставляйте корабли!");
 	Message("Инструкция: 4(a1,a2,a3,a4)");
-
 	
 	while (!ShipsAreReady())
 	{
-		if (k == 0)
-		{
-			if(placerecieve() != "False")
+			if (Try2PlaceShip(recieve()))
 			{
-				if (Try2PlaceShip(lastwords))
-				{
-					Message("OK");
-				}
+				Message("OK");
 			}
 			else
 			{
 				Message("Ошибка в расположении корабля!");
 			}
-		}
-		if (lastwords != "False")
-		{
-			if (Try2PlaceShip(lastwords))
-			{
-				Message("OK");
-			}
-		}
-		else
-		{
-			Message("Ошибка в расположении корабля!");
-		}
-		k++;
-		Message(m_Aqua.PrintForeign());
-		
+	Message(m_Aqua.PrintForeign());
 	}
 	Message("Ваши корабли готовы!");
 	
@@ -71,11 +50,44 @@ bool CBattlePlayer::PrepareShips()
 bool CBattlePlayer::DoMove()
 {
 	Message("Ваш ход!");
-	string move = lastwords;
+	string move = recieve();
 
 	Message(m_Aqua.PrintForeign());
 	//Message(m_Aqua.PrintOwn());
 	CShip *ship=NULL;
+	string alf = "AaBbCcDdEeFfGgHhIiJj"; // для проверки символа в диапозоне A-j
+	string cifrs = "123456789"; // для проверки символа в диапозоне A-j
+	cout << move << endl;
+	cout << move.length() << "< длина\n";
+	if (alf.find(move[0]) == std::string::npos or move.length() == 1 or move.length() >= 4)
+	{
+		cout << "ошибка в букве или длине 1\n";
+		Message("Некорректный ход");
+		DoMove();
+	}
+	if (move.length() == 2)
+	{
+		if (cifrs.find(move[1]) == std::string::npos)
+		{
+			cout << "ошибка в цифре при длине 2\n";
+
+			Message("Некорректный ход");
+			DoMove();
+		}
+	}
+	else if (move.length() == 3)
+	{
+		if (move[1] == '1' and move[2] == '0')
+		{
+		}
+		else
+		{
+			cout << "ошибка в (10) при длине 3\n";
+
+			Message("Некорректный ход");
+			DoMove();
+		}
+	}
 	if (m_pAnotherPlayer->m_Aqua.TestShip(move, &ship))
 	{
 		Message("Попадание!");
@@ -150,7 +162,6 @@ bool CBattlePlayer::Try2PlaceShip(string ship)
 	int iDeck = 0;
 	char buf[50];
 	sscanf_s(ship.c_str(), "%i(%[^)]", &iDeck,buf,50);
-	
 	char cell[4][10];
 
 	if (iDeck == 4)
@@ -208,40 +219,12 @@ bool CBattlePlayer::Try2openfile(string flink)
 string CBattlePlayer::recieve()
 {
 	char buff[1024];
-
+	char buff1[1024];
 	recv(m_sock, &buff[0], sizeof(buff), 0);
-	
-	string strbuf(buff);
-	strbuf += "f";
-	if (strbuf[2] == '0')
-		strbuf.erase(strbuf.find_first_of("0") + 1, strbuf.find_first_of("f"));
-	else	
-		strbuf.erase(2, strbuf.find_first_of("f"));
-	strbuf.erase(remove(strbuf.begin(), strbuf.end(), ' '), strbuf.end());
-	string alf = "AaBbCcDdEeFfGgHhIiJj"; // для проверки символа в диапозоне A-j
-	string cifrs = "123456789"; // для проверки символа в диапозоне A-j
-	lastwords = strbuf;
-
-	if (alf.find(strbuf[0]) == std::string::npos or strbuf.length() == 1) return "False";
-	if (strbuf.length() == 2)
-	{
-		if (cifrs.find(strbuf[1]) != std::string::npos)
-			return buff;
-		else
-		{
-			return "False";
-		}
-	}
-	else if (strbuf.length() == 3)
-	{
-		if (strbuf[1] == '1' and strbuf[2] == '0')
-			return buff;
-		else
-		{
-			return "False";
-		}
-	}
-	return buff;
+	sscanf_s(buff, "%[^\n]", buff1,1024);
+	//cout << buff << " < это buf \n";
+	//cout << buff1 << " < это buf1 \n";
+	return buff1;
 }
 
 string CBattlePlayer::placerecieve()
@@ -257,7 +240,6 @@ string CBattlePlayer::placerecieve()
 	strbuf.erase(remove(strbuf.begin(), strbuf.end(), ' '), strbuf.end());
 	cout << strbuf;
 	char buf[50];
-	lastwords = strbuf;
 	int nDeck;
 	sscanf_s(strbuf.c_str(), "%i(%[^)]", &nDeck, buf, 50);
 

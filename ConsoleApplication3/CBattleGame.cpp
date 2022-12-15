@@ -109,24 +109,10 @@ void CBattleGame::DoPlay()
 	while (m_Player1.IsAlive() and m_Player2.IsAlive())
 	{
 		if (m_iCurrentMove == MOVE1)
-			if (m_Player1.recieve() != "False")
-			{
 				m_Player1.DoMove();
-			}
-			else
-			{
-				m_Player1.Message("Неккоректный ход");
-			}
 		
 		if (m_iCurrentMove == MOVE2)
-			if (m_Player2.recieve() != "False")
-			{
 				m_Player2.DoMove();
-			}
-			else
-			{
-				m_Player2.Message("Неккоректный ход");
-			}
 		m_iCurrentMove *= -1;
 	}
 	

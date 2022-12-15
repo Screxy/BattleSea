@@ -25,7 +25,6 @@ public:
 
 
 	string recieve();
-	string lastwords = "none";
 	string placerecieve();
 	string fileplace(string flink);//доработать
 	
